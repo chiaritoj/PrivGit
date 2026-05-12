@@ -1,0 +1,1 @@
+This is the first draft of the design documentation for our project PrivGit.
