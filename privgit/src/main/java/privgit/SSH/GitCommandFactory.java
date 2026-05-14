@@ -14,7 +14,7 @@ public class GitCommandFactory implements CommandFactory {
     @Override
     public Command createCommand(ChannelSession session,String command) {
 
-        System.out.println("🔥 INTERCEPTED SSH COMMAND: " + command);
+        System.out.println("INTERCEPTED SSH COMMAND: " + command);
 
         return new Command() {
 
