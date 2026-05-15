@@ -29,6 +29,9 @@ replay_pid*
 # Ignore .env
 .env
 
+# Ignore data folders, which would hold repositories and a hostkey
+data/
+
 # Maven git ignore.
 target/
 pom.xml.tag
