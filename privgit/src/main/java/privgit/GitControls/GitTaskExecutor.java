@@ -9,7 +9,7 @@ import org.springframework.core.task.TaskExecutor;
 @Configuration
 public class GitTaskExecutor {
     // Sets up configuration for Task executor pool to prevent overload.
-    @Bean
+    @Bean(name = "gitThreadPoolExecutor")
     public TaskExecutor gitTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 

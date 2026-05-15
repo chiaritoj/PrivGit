@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
 
 import privgit.GitControls.GitCommandFactory;
 import privgit.GitControls.GitService;
@@ -24,7 +25,7 @@ public class SSHServerConfig {
     private int sshPort;
 
     @Bean(initMethod = "start", destroyMethod = "stop")
-    public SshServer sshServer(GitService gitService) throws IOException {
+    public SshServer sshServer(GitService gitService, TaskExecutor gitExecutor) throws IOException {
 
         Path hostKeyPath = Path.of("data/ssh/hostkey");
         Files.createDirectories(hostKeyPath.getParent());
@@ -42,7 +43,7 @@ public class SSHServerConfig {
 
         server.setPublickeyAuthenticator(new GitPubKeyAuthenticator());
 
-        server.setCommandFactory(new GitCommandFactory(gitService));
+        server.setCommandFactory(new GitCommandFactory(gitService, gitExecutor));
 
         return server;
     }
