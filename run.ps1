@@ -1,7 +1,7 @@
 param(
     [string]$Profile,
 
-    [string]$ProjectPath = "./privgit"
+    [string]$ProjectPath = "$PSScriptRoot\privgit"
 )
 
 $validProfiles = @("dev", "prod")

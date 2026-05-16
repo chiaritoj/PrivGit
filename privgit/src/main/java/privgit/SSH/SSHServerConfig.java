@@ -5,18 +5,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.apache.sshd.server.SshServer;
+import org.apache.sshd.server.auth.pubkey.UserAuthPublicKeyFactory;
+import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 
 import privgit.GitControls.GitCommandFactory;
 import privgit.GitControls.GitService;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-
-import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
-import org.apache.sshd.server.auth.pubkey.UserAuthPublicKeyFactory;
-import org.apache.sshd.server.SshServer;
 
 @Configuration
 public class SSHServerConfig {
@@ -42,6 +40,7 @@ public class SSHServerConfig {
         );
 
         server.setPublickeyAuthenticator(new GitPubKeyAuthenticator());
+        System.out.println("SSH SERVER AUTH SET");
 
         server.setCommandFactory(new GitCommandFactory(gitService, gitExecutor));
 
