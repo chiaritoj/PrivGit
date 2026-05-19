@@ -1,16 +1,17 @@
 package privgit.Persistence;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RepoPersistence {
     
-    private final File repo_dir = new File("RepoStorage");
+     private final Path repoRoot = Path.of("privgit", "data", "repos");
 
     /**
      * Creates a Bare Repo that stores Git History
@@ -18,31 +19,33 @@ public class RepoPersistence {
      * @return Directory of that repo
      */
     public File repo_create(String reponame){
-        File repoDir = new File(repo_dir, reponame + ".git");
+         Path repoPath = repoRoot.resolve(reponame + ".git");
 
-        if(repoDir.exists()){
+        if(Files.exists(repoPath)){
             throw new IllegalArgumentException("Repo Already Exist");
         }
         try{
+
+            Files.createDirectories(repoRoot);
+
             Git.init()
-            .setDirectory(repoDir)
-            .setBare(true)
-            .call()
-            .close();
-        }catch(GitAPIException e){
-            e.printStackTrace();
-            System.out.println("Error in Repo_Create");
+                .setDirectory(repoPath.toFile())
+                .setBare(true)
+                .call()
+                .close();
+            
+            return repoPath.toFile();
+        }catch(Exception e){
+            throw new RuntimeException("Failed to create repo for " + reponame, e);
         }
-    
-        return repoDir;
     }
 
     public boolean repo_exist(){
         return false;
     }
 
-    public String repo_get(){
-        return null;
+    public File repo_get(String name){
+        return repoRoot.resolve(name).toFile();
     }
 
     public boolean repo_Delete(){

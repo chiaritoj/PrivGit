@@ -1,14 +1,14 @@
 package privgit.GitControls;
 
-import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
-import org.eclipse.jgit.transport.UploadPack;
-import org.springframework.stereotype.Service;
-import org.eclipse.jgit.transport.ReceivePack;
-
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.transport.ReceivePack;
+import org.eclipse.jgit.transport.UploadPack;
+import org.springframework.stereotype.Service;
 
 @Service
 public class GitService {
