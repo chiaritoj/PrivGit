@@ -1,17 +1,15 @@
 package privgit.GitControls;
 
-import org.springframework.context.annotation.Configuration;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
+import org.eclipse.jgit.http.server.GitServlet;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
-
-import org.eclipse.jgit.http.server.GitServlet;
+import org.springframework.context.annotation.Configuration;
 
 import privgit.Persistence.RepoPersistence;
 
@@ -29,7 +27,7 @@ public class GitHttpConfig {
         GitServlet servlet = new GitServlet();
         servlet.setRepositoryResolver((req, name) -> {
             try {
-                File repo = Path.of("privgit", "data", "repos", name).toFile();
+                File repo = Path.of( "data", "repos", name).toFile();
 
                 if (!repo.exists()) {
                     throw new RepositoryNotFoundException(name);

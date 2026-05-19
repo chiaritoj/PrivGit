@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RepoPersistence {
     
-     private final Path repoRoot = Path.of("privgit", "data", "repos");
+     private final Path repoRoot = Path.of( "data", "repos");
 
     /**
      * Creates a Bare Repo that stores Git History
