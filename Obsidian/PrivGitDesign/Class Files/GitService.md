@@ -1,0 +1,1 @@
+The main backend service responsible for managing Git repository operations across multiple transport protocols. It abstracts the lower-level JGit functionality behind a shared service layer so both SSH and HTTP Git requests can interact with repositories using the same configuration and execution logic.

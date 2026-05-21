@@ -1,0 +1,1 @@
+The class file responsible for receiving the plaintext of SSH commands and parsing them into record types objects with an enumerated operation.

@@ -2,7 +2,6 @@ package privgit.GitControls;
 
 import java.io.OutputStream;
 import java.io.InputStream;
-import java.nio.file.Path;
 
 import org.apache.sshd.server.channel.ChannelSession;
 import org.springframework.core.task.TaskExecutor;
@@ -36,7 +35,7 @@ public class GitCommandHandler implements Command {
     }
 
     private void executeGitCommand() {
-        try (Repository repo = gitService.openRepo(resolveRepo(request.repository()));) {
+        try (Repository repo = gitService.openRepository(request.repository());) {
             // Determine which operation, (if supported)
             switch (request.operation()) {
                 case UPLOAD_PACK -> gitService.uploadPack(repo, in, out, err);
@@ -53,14 +52,6 @@ public class GitCommandHandler implements Command {
             e.printStackTrace();
             callback.onExit(1, e.getMessage());
         }
-    }
-
-    private String resolveRepo(String repo) {
-        // Add ending if needed,
-        if (!repo.endsWith(".git")) repo += ".git";
-        
-        // Construct repo path.
-        return Path.of("data", "repos", repo).toAbsolutePath().toString();
     }
 
     @Override public void destroy(ChannelSession channel) {}

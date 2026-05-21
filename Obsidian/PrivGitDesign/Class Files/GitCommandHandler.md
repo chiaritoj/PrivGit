@@ -1,0 +1,2 @@
+#ssh
+A class file that implements the JGit Command interface, managing input and output channels of the SSH connection to asynchronously handle the user's command. At this step, the command's operation is parsed and passed along to the [[main service class]] that manages repositories.

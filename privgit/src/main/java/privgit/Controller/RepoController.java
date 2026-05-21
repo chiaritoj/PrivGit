@@ -35,7 +35,7 @@ public class RepoController {
 
     @GetMapping("/{name}")
     public ResponseEntity<String> GetRepo(@PathVariable String name) throws Exception {
-        gitService.openRepo(name);
+        gitService.openRepository(name);
         return ResponseEntity.ok("Repo exists: " + name);
     }
 
