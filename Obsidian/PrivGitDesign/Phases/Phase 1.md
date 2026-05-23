@@ -17,6 +17,23 @@ In terms of how our architecture supports the commands explicitly, this is the h
 5. The [[GitService]] class then utilizes the JGit library to finish the Git operations stored bare in the system.
 ### Supporting HTTP 
 
+To support HTTP-based Git operations, we created configuration files that manages incoming HTTP requests, route traffic through the appropriate ports and connect those requests into Git services.
 
+Handling HTTP requests was relatively straightforward since our team already had experience working REST APIs and HTTP communication.  Routing those requests through Git services did required additional time and more research, but it was easily manageable once we understand how Git operations were handled internally.
+
+One issue we encountered was that the application was routing traffic through port 8080 instead of port 80. We resolved this by configuring Tomcat services and adding an HTTP connector that allowed the application to accept requests on port 80.
+
+For how our system design work all-together assume we have an HTTP requests
+git clone http://localhost/git/Test1.git
+
+1. When we run the app using mvn spring-boot:run, Spring boot starts a local HTTP server on our computer. We route HTTP through port 80 using [[HttpConnectorConfig]].
+2. After the HTTP requests is routed to the Spring boot application, [[GitHttpConfig]] allows the requests to be handled as Git Operation such as clone fetch or push by using [[GitService]] class.
+3. The [[GitService]] class then uses the JGit library to perform Git operations on the bare repositories stored within the system.
 
 ### Other Details
+
+Git have 3 operations: Upload_Pack where we are able to clone/fetch/pull, Receive_Pack where we are able to push and Upload_Archive where we download repo as archive like zip. However, we decided not to use Upload_Archive because our project handles archive downloads by using HTTP endpoints to return a zip file meaning Upload_Archive is meaningless or deprecated. 
+
+For port configuration, we need to use Spring boot profiles to separate local from production. Instead of hardcoding one port, we can run the application with different profiles, such as dev or prod, and each profile can define its own server port and SSH port.
+
+To make this much easier to run we created a PowerShell scripts that starts the application with the right Spring profile however we notice this does not work with Linux systems. In the future, we will create a Bash script so the same workflow works with Linux-based systems.
