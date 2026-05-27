@@ -26,6 +26,13 @@ replay_pid*
 # Obsidian git ignore.
 .obsidian/
 
+# ignore ide settings
+.settings/
+
+# and some of my other artifacts.
+.classpath
+.project
+
 # Ignore .env
 .env
 
