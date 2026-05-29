@@ -13,6 +13,7 @@ import org.eclipse.jgit.lib.Repository;
 
 public class GitCommandHandler implements Command {
 
+    private final Integer userId;
     private final GitRequest request;
     private final GitService gitService;
     private final TaskExecutor gitExecutor;
@@ -22,7 +23,8 @@ public class GitCommandHandler implements Command {
     private OutputStream err;
     private ExitCallback callback;
 
-    public GitCommandHandler(GitRequest request, GitService gitService, TaskExecutor gitExecutor) {
+    public GitCommandHandler(GitRequest request, GitService gitService, TaskExecutor gitExecutor, Integer userId) {
+        this.userId = userId;
         this.request = request;
         this.gitService = gitService;
         this.gitExecutor = gitExecutor;
@@ -38,8 +40,8 @@ public class GitCommandHandler implements Command {
         try (Repository repo = gitService.openRepository(request.repository());) {
             // Determine which operation, (if supported)
             switch (request.operation()) {
-                case UPLOAD_PACK -> gitService.uploadPack(repo, in, out, err);
-                case RECEIVE_PACK -> gitService.receivePack(repo, in, out, err);
+                case UPLOAD_PACK -> gitService.uploadPack(userId, repo, in, out, err);
+                case RECEIVE_PACK -> gitService.receivePack(userId, repo, in, out, err);
                 default -> throw new IllegalStateException("Unsupported operation");
             }
 

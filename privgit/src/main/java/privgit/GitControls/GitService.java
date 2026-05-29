@@ -15,24 +15,24 @@ import org.springframework.stereotype.Service;
 public class GitService {
 
     // Methods used for SSH primarily
-    public void uploadPack(Repository repo, InputStream in, OutputStream out, OutputStream err) throws Exception {
-        UploadPack uploadPack = createUploadPack(repo);
+    public void uploadPack(Integer userId, Repository repo, InputStream in, OutputStream out, OutputStream err) throws Exception {
+        UploadPack uploadPack = createUploadPack(userId, repo);
         uploadPack.upload(in, out, err);
     }
 
-    public void receivePack(Repository repo, InputStream in, OutputStream out, OutputStream err) throws Exception {
-        ReceivePack receivePack = createReceivePack(repo);
+    public void receivePack(Integer userId, Repository repo, InputStream in, OutputStream out, OutputStream err) throws Exception {
+        ReceivePack receivePack = createReceivePack(userId, repo);
         receivePack.receive(in, out, err);
     }
 
     // Direct constructors for use by both, since HTTP requires the pack itself.
-    public UploadPack createUploadPack(Repository repo) {
+    public UploadPack createUploadPack(Integer userId, Repository repo) {
         UploadPack uploadPack = new UploadPack(repo);
         // TODO : Handle configuring repository settings at this step, to prevent unauthorized use.
         return uploadPack;
     }
     
-    public ReceivePack createReceivePack(Repository repo) {
+    public ReceivePack createReceivePack(Integer userId, Repository repo) {
         ReceivePack receivePack = new ReceivePack(repo);
         // TODO : Handle configuring repository settings at this step, to prevent unauthorized use.
         receivePack.setAllowCreates(true);
@@ -43,12 +43,14 @@ public class GitService {
     }
 
     // Public method to resolve and open a repository by name,
-    public Repository openRepository(String name) throws Exception {
-        return openRepo(resolveRepo(name));
+    public Repository openRepository(Integer userId, String name) throws Exception {
+        return openRepo(userId, resolveRepo(name));
     }
 
-    private Repository openRepo(String path) throws Exception {
+    private Repository openRepo(Integer userId, String path) throws Exception {
         File gitDir = new File(path);
+
+        // TODO : Determine the user should have access to this repository at all.
 
         // Throw if not existing.
         if (!gitDir.exists())

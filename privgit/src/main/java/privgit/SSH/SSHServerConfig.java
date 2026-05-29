@@ -42,7 +42,9 @@ public class SSHServerConfig {
         server.setPublickeyAuthenticator(new GitPubKeyAuthenticator());
         System.out.println("SSH SERVER AUTH SET");
 
-        server.setCommandFactory(new GitCommandFactory(gitService, gitExecutor));
+        Integer userId = 1; // TODO: Determine a UserID from this connection, and pass it down the chain. 
+
+        server.setCommandFactory(new GitCommandFactory(gitService, gitExecutor, userId));
 
         return server;
     }

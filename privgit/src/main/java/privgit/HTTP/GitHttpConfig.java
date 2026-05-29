@@ -29,6 +29,9 @@ public class GitHttpConfig {
     @Bean
     public ServletRegistrationBean<GitServlet> gitServlet() {
         GitServlet servlet = new GitServlet();
+
+        Integer userId = 1; // TODO : Determine a userid from this connection.
+
         servlet.setRepositoryResolver((req, name) -> {
             try {return gitService.openRepository(name);}
 
@@ -36,11 +39,11 @@ public class GitHttpConfig {
         });
 
         servlet.setReceivePackFactory((req, repo) -> {
-            return gitService.createReceivePack(repo);
+            return gitService.createReceivePack(userId, repo);
         });
 
         servlet.setUploadPackFactory((req, repo) ->
-            gitService.createUploadPack(repo)
+            gitService.createUploadPack(userId, repo)
         );
 
         return new ServletRegistrationBean<>(servlet, "/git/*");
